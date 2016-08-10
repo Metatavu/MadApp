@@ -1,3 +1,6 @@
+var $ = window.$;
+var pages = {};
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -14,7 +17,22 @@ var app = {
     //
     // The scope of 'this' is the event.
     onDeviceReady: function() {
+      $.getJSON('http://dev.madapi.fi/wp-json/wp/v2/posts', function(posts){
+        for(var i = 0; i < posts.length; i++){
+          var post = posts[i];
+          pages[post.slug] = {
+            title: post.title.rendered,
+            content: post.content.rendered,
+            //TODO: add location fields
+          }
+        }
+        app.renderPage('etusivu');
+      });
     },
+    renderPage: function(slug) {
+      $('.main-content').html(pages[slug].content);
+      $('.content-title').text(pages[slug].title);
+    }
 };
 
 app.initialize();
