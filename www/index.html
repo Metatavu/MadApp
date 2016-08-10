@@ -1,26 +1,87 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+  
+  <head>
+    <!-- Customize this policy to fit your own app's needs. For more guidance, see: https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+    Some notes: * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
             * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Mikkeli Art and Design Week</title>
-    </head>
-    <body>
-        <div class="app">
+    <!-- TODO: tietoturva!! -->
+    <meta http-equiv="Content-Security-Policy" content="default-src *;">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/madapp.css">
+    <title>Mikkeli Art and Design Week</title>
+  </head>
+  
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+          aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
         </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+        <div class="row">
+          <div class="col-xs-6">
+            <h2 class="navbar-date">19.-26.9.2015</h2>
+          </div>
+          <div class="col-xs-6">
+            <img class="mad-logo img-responsive" src="img/mad_bubble.png" alt="Mikkeli Art & Design Week" />
+          </div>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="#">ETUSIVU</a>
+            </li>
+            <li>
+              <a href="#">INFO</a>
+            </li>
+            <li>
+              <a href="#">AIKATAULUT</a>
+            </li>
+            <li>
+              <a href="#">KARTTA</a>
+            </li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6">
+          <h3 class="content-title"></h3>
+        </div>
+        <div class="col-xs-6 mad-header">Mikkeli Art&nbsp
+          <span class="mad-little">&</span>
+          <br/>Design Week</div>
+      </div>
+      <div class="main-content">
+      </div>
+    </div>
+    <!-- /.container -->
+    <footer class="footer">
+      <div class="container">
+        <p>
+          <img src="img/mad_only.png" class="footer-logo" />
+          <span class="footer-text">Tapahtumapaikat kartalla</span>
+        </p>
+      </div>
+    </footer>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+  </body>
+
 </html>
