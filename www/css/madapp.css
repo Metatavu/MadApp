@@ -13,111 +13,73 @@ body {
   -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
   -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
   font-family: 'Titillium Web', sans-serif;
-  margin-bottom: 60px;
   padding-top: 85px;
+  background: url('../img/bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 .main-content {
-  padding-top: 10px;
   line-height: 1.1;
+  padding: 10px;
+  background-color: rgba(255,255,255,0.7);
 }
 .footer {
-  position: fixed;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #000;
   color: #FFF;
   font-size:16px;
   font-weight: 500;
 }
-.navbar-inverse {
-  background-color: #000;
-  border-color: #000;
-  color:#FFF;
-  text-transform: uppercase;
+.navbar-default {
+    background-color: #fff;
+    border: none;
 }
-.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
-  background-color: #000;
+.navbar-default .navbar-toggle {
+    border: none;
+    margin-right: 0px;
 }
-.navbar-inverse .navbar-toggle {
-  border-color: #000;
+.navbar-default .navbar-toggle:focus {
+    background-color: #fff;
+}
+.navbar-toggle .icon-bar {
+    width: 30px;
 }
 .navbar-nav {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-.navbar-collapse {
-  position: absolute;
-  top: 35px;
-  left: 30px;
-  width: 150px;
-  background-color: #000;
-  border: 1px solid #FFF;  
-}
-.nav > li {
-  border: 1px solid #fff;
+.navbar .row {
+  background-color: #fff;
 }
 .navbar-date {
-  float:left;
-  margin-top:0px;
-  margin-left: -5px;
-  font-size:21px;
-}
-.navbar-inverse .navbar-nav > li > a {
-  color: #FFF;
-}
-.navbar-inverse .navbar-brand {
-  color: #FFF;
-  float:right;
-}
-.navbar-toggle {
-  float: left;
-  margin-right: 0px;
-  margin-left: 5px;
-  border: 0px;
-  border-radius: 0px;
-  margin-top: 5px;
-}
-.navbar-toggle .icon-bar {
-  margin-bottom: 7px;
-  width: 30px;
-  border-radius: 2px;
-  height: 2px;
+  margin-top: 0px;
+  margin-left: -25px;
+  font-size: 21px;
+  padding-top: 24px;
 }
 .mad-logo {
-  margin-top: -45px;
-  margin-left: -20px;
+  margin-top: 10px;
+  margin-left: 0px;
   max-width: 157px;
 }
 .mad-header {
   font-size: 21px;
   text-transform: uppercase;
   line-height: 0.9;
-  background-color: #000;
-  color:#FFF;
+  background-color: #fff;
+  color: #000;
   font-weight: 500;
   padding-top: 8px;
   padding-bottom: 7px;
-  padding-left: 5px;
-  position: fixed;
-  right: 0px;
-}
-.mad-header:before {
-  content: "";
-  line-height: 0;
-  font-size: 0px;
-  width: 0px;
-  height: 0px;
-  border-width: 51px 0px 0px 20px;
-  border-style: solid;
-  border-color: #000 transparent transparent;
+  padding-left: 15px;
   position: absolute;
-  top: 0px;
-  left: -20px;
+  left: 0px;
 }
 .mad-header > .mad-little {
-  font-size: 18px;
+  font-size: 13px;
 }
 h3 {
   margin-top: 10px;
@@ -125,8 +87,10 @@ h3 {
   font-size: 18px;
 }
 .content-title {
-  margin-top:20px;
-  font-size:18px;
+  font-size: 20px;
+  padding-left: 10px;
+  margin-top: 30px;
+  margin-bottom: 0px;
 }
 .footer-logo {
   margin-top: 15px;
