@@ -17,16 +17,24 @@ var app = {
   //
   // The scope of 'this' is the event.
   onDeviceReady: function () {
-    $.getJSON('http://dev.madapi.fi/wp-json/wp/v2/posts', function (posts) {
+    $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts', function (posts) {
       for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
         pages[post.slug] = {
           title: post.title.rendered,
           content: post.content.rendered,
-          //TODO: add location fields
+          latitude: post.latitude,
+          longitude: post.longitude
         }
       }
       app.renderPage('etusivu');
+    });
+    $('.menu-item').click(function(){
+      var target = $(this).attr('data-target');
+      $('.active').removeClass('active');
+      $(this).parent().addClass('active');
+      $('.navbar-toggle').click();
+      app.renderPage(target);
     });
   },
   renderPage: function (slug) {
