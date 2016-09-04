@@ -1,5 +1,7 @@
 var $ = window.$;
-var pages = {};
+var eventpages = {};
+var frontpage = {};
+var infopage = {};
 
 var app = {
   // Application Constructor
@@ -20,26 +22,55 @@ var app = {
     $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts', function (posts) {
       for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
-        pages[post.slug] = {
-          title: post.title.rendered,
-          content: post.content.rendered,
-          latitude: post.latitude,
-          longitude: post.longitude
+        switch (post.postType) {
+          case 'frontpage':
+            frontpage = {
+              title: post.title.rendered,
+              content: post.content.rendered,
+            };
+            break;
+          case 'info':
+            infopage = {
+              title: post.title.rendered,
+              content: post.content.rendered,
+            };
+            break;
+          case 'event':
+            eventpages[post.slug] = {
+              title: post.title.rendered,
+              content: post.content.rendered,
+              latitude: post.blm_latitude,
+              longitude: post.blm_longitude
+            }
+            break;
         }
       }
-      app.renderPage('etusivu');
+      app.renderFrontPage();
     });
     $('.menu-item').click(function(){
       var target = $(this).attr('data-target');
       $('.active').removeClass('active');
       $(this).parent().addClass('active');
       $('.navbar-toggle').click();
-      app.renderPage(target);
+      switch(target) {
+        case 'frontpage':
+          app.renderFrontPage();
+          break;
+        case 'info':
+          app.renderInfoPage();
+          break;
+      }
     });
   },
-  renderPage: function (slug) {
-    $('.main-content').html(pages[slug].content);
-    $('.content-title').text(pages[slug].title);
+  renderPage: function (page) {
+    $('.main-content').html(page.content);
+    $('.content-title').text(page.title);
+  },
+  renderFrontPage: function(){
+    app.renderPage(frontpage);
+  },
+  renderInfoPage: function(){
+    app.renderPage(infopage);
   },
   renderTimeTable: function (date) {
     if (typeof date == 'undefined') {
