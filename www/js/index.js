@@ -3,6 +3,8 @@ var eventpages = {};
 var frontpage = {};
 var infopage = {};
 var eventsInitialized = false;
+var mapInitialized = false;
+var map = null;
 
 var app = {
   // Application Constructor
@@ -92,6 +94,9 @@ var app = {
         case 'events':
           app.renderEventsPage();
           break;
+        case 'map':
+          app.renderMapPage();
+          break;
       }
     });
   },
@@ -99,6 +104,7 @@ var app = {
     $('.default-container .main-content').html(page.content);
     $('.default-container .content-title').text(page.title);
     $('.events-container').hide();
+    $('.map-container').hide();
     $('.default-container').show();
   },
   renderFrontPage: function(){
@@ -107,8 +113,49 @@ var app = {
   renderInfoPage: function(){
     app.renderPage(infopage);
   },
+  renderMapPage: function(){
+    $('.default-container').hide();
+    $('.events-container').hide();
+    $('.map-container').show();
+    if(!mapInitialized) {
+      mapInitialized = true;
+      var layer = new L.StamenTileLayer('watercolor');
+      map = new L.Map('map');
+      map.addLayer(layer);
+      for(var slug in eventpages) {
+        if(eventpages.hasOwnProperty(slug)) {
+          var event = eventpages[slug];
+          var marker = L.marker({
+            lat: event.latitude,
+            lng: event.longitude
+          }).addTo(map);
+          marker.on('click', function(event){
+            return function(){
+              bootbox.dialog({
+                title: event.title,
+                message: event.content
+              });
+            };
+          }(event));
+        }
+      }
+    }
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      map.setView({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      }, 14);
+    }, function(err) {
+      //If position is not available for some reason, use mikkeli centre
+      map.setView({
+        lat: 61.688727,
+        lng: 27.272146
+      }, 14);
+    });
+  },
   renderEventsPage: function(){
     $('.default-container').hide();
+    $('.map-container').hide();
     $('.events-container').show();
     if(!eventsInitialized) {
       eventsInitialized = true;

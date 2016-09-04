@@ -29,6 +29,21 @@ body {
   width: 100%;
   height: 100%;
 }
+.map-container {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+#map {
+  height: 100%;
+}
+.leaflet-top {
+  top: 20px;
+}
+.bootbox-body img {
+  width: 100%;
+  height: auto;
+}
 .main-content {
   line-height: 1.1;
   padding: 10px;
