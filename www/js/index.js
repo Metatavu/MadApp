@@ -2,6 +2,7 @@ var $ = window.$;
 var eventpages = {};
 var frontpage = {};
 var infopage = {};
+var eventsInitialized = false;
 
 var app = {
   // Application Constructor
@@ -42,6 +43,35 @@ var app = {
               latitude: post.blm_latitude,
               longitude: post.blm_longitude
             }
+            var slide = $('<div></div>');
+            slide.addClass('swiper-slide');
+            slide.append($('<div></div>')
+              .addClass('swiper-container')
+              .addClass('swiper-container-inner')
+              .append(
+                $('<div></div>')
+                  .addClass('swiper-wrapper')
+                  .append(
+                    $('<div></div>')
+                      .addClass('swiper-slide')
+                      .append(
+                        $('<h3></h3>')
+                          .addClass('content-title')
+                          .text(post.title.rendered)
+                      )
+                      .append(
+                        $('<div></div>')
+                          .addClass('main-content')
+                          .html(post.content.rendered)
+                      )
+                  )
+              )
+              .append(
+                $('<div></div>')
+                  .addClass('swiper-scrollbar')
+              )
+            );
+            $('.events-wrapper').append(slide); //TODO: sort
             break;
         }
       }
@@ -59,18 +89,39 @@ var app = {
         case 'info':
           app.renderInfoPage();
           break;
+        case 'events':
+          app.renderEventsPage();
+          break;
       }
     });
   },
   renderPage: function (page) {
-    $('.main-content').html(page.content);
-    $('.content-title').text(page.title);
+    $('.default-container .main-content').html(page.content);
+    $('.default-container .content-title').text(page.title);
+    $('.events-container').hide();
+    $('.default-container').show();
   },
   renderFrontPage: function(){
     app.renderPage(frontpage);
   },
   renderInfoPage: function(){
     app.renderPage(infopage);
+  },
+  renderEventsPage: function(){
+    $('.default-container').hide();
+    $('.events-container').show();
+    if(!eventsInitialized) {
+      eventsInitialized = true;
+      new Swiper('.events-container', {});
+      new Swiper('.swiper-container-inner', {
+          scrollbar: '.swiper-scrollbar',
+          direction: 'vertical',
+          slidesPerView: 'auto',
+          mousewheelControl: true,
+          freeMode: true,
+          autoHeight: true
+      });
+    }
   },
   renderTimeTable: function (date) {
     if (typeof date == 'undefined') {

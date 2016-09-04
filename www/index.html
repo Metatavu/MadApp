@@ -14,6 +14,7 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/swiper/css/swiper.min.css">
     <link rel="stylesheet" type="text/css" href="css/madapp.css">
     <title>Mikkeli Art and Design Week</title>
   </head>
@@ -54,6 +55,9 @@
               <a class="menu-item" data-target="frontpage" href="#">ETUSIVU</a>
             </li>
             <li>
+              <a class="menu-item" data-target="events" href="#">TAPAHTUMAT</a>
+            </li>
+            <li>
               <a class="menu-item" data-target="info" href="#">INFO</a>
             </li>
             <li>
@@ -67,15 +71,20 @@
         <!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container">
+    <div class="container default-container">
       <h3 class="content-title"></h3>
       <div class="main-content"></div>
+    </div>
+    <div class="events-container swiper-container">
+      <div class="events-wrapper swiper-wrapper">
+      </div>
     </div>
     <!-- /.container -->
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="lib/jquery/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="lib/moment/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/swiper/js/swiper.jquery.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
   </body>
 
