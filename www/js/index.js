@@ -41,20 +41,25 @@ var app = {
             break;
           case 'event':
             var open = JSON.parse(post.open);
+            var openMoment = open.map( function(eventOpen){ 
+              return {
+                date: eventOpen.date,
+                opens: moment(eventOpen.date +' '+eventOpen.opens, 'D.M. H:mm'),
+                closes: moment(eventOpen.date +' '+eventOpen.closes, 'D.M. H:mm') 
+              };
+            });
+            var extraContent = '<p><b>Missä:</b><br/>'+post.blm_formatted_address+'</p><p><b>Milloin:</b><br/>';
+            for(var j = 0; j < openMoment.length;j++) {
+              extraContent+= '<span>'+openMoment[j].opens.format('dd D.M. H:mm')+' - '+openMoment[j].closes.format('H:mm')+'</span><br/>';
+            }
             eventpages[post.slug] = {
               slug: post.slug,
               title: post.title.rendered,
-              content: post.content.rendered,
+              content: post.content.rendered + extraContent,
               latitude: post.blm_latitude,
               longitude: post.blm_longitude,
               dates:open.map( function(eventOpen){ return eventOpen.date; }), 
-              open: open.map( function(eventOpen){ 
-                return {
-                  date: eventOpen.date,
-                  opens: moment(eventOpen.date +' '+eventOpen.opens, 'D.M. H:mm'),
-                  closes: moment(eventOpen.date +' '+eventOpen.closes, 'D.M. H:mm') 
-                };
-              })
+              open: openMoment
             }
             var slide = $('<div></div>');
             slide.addClass('swiper-slide');
@@ -70,12 +75,12 @@ var app = {
                       .append(
                         $('<h3></h3>')
                           .addClass('content-title')
-                          .text(post.title.rendered)
+                          .text(eventpages[post.slug].title)
                       )
                       .append(
                         $('<div></div>')
                           .addClass('main-content')
-                          .html(post.content.rendered)
+                          .html(eventpages[post.slug].content)
                       )
                   )
               )
