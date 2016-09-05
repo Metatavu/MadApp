@@ -22,6 +22,7 @@ var app = {
   //
   // The scope of 'this' is the event.
   onDeviceReady: function () {
+    moment.locale('fi');
     $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts', function (posts) {
       for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
@@ -39,11 +40,21 @@ var app = {
             };
             break;
           case 'event':
+            var open = JSON.parse(post.open);
             eventpages[post.slug] = {
+              slug: post.slug,
               title: post.title.rendered,
               content: post.content.rendered,
               latitude: post.blm_latitude,
-              longitude: post.blm_longitude
+              longitude: post.blm_longitude,
+              dates:open.map( function(eventOpen){ return eventOpen.date; }), 
+              open: open.map( function(eventOpen){ 
+                return {
+                  date: eventOpen.date,
+                  opens: moment(eventOpen.date +' '+eventOpen.opens, 'D.M. H:mm'),
+                  closes: moment(eventOpen.date +' '+eventOpen.closes, 'D.M. H:mm') 
+                };
+              })
             }
             var slide = $('<div></div>');
             slide.addClass('swiper-slide');
@@ -97,7 +108,22 @@ var app = {
         case 'map':
           app.renderMapPage();
           break;
+        case 'timetable':
+          app.renderTimeTable();
+          break;
       }
+    });
+    $(document).on('click', '.date-timetable', function(){
+      var date = $(this).attr('data-date');
+      app.renderTimeTable(date);
+    });
+    $(document).on('click', '.show-event-data', function(){
+      var slug = $(this).attr('data-slug');
+      var event = eventpages[slug];
+      bootbox.dialog({
+        title: event.title,
+        message: event.content
+      });
     });
   },
   renderPage: function (page) {
@@ -139,6 +165,10 @@ var app = {
           }(event));
         }
       }
+      map.setView({
+        lat: 61.688727,
+        lng: 27.272146
+      }, 14);
     }
     navigator.geolocation.getCurrentPosition(function(pos) {
       map.setView({
@@ -146,11 +176,7 @@ var app = {
         lng: pos.coords.longitude
       }, 14);
     }, function(err) {
-      //If position is not available for some reason, use mikkeli centre
-      map.setView({
-        lat: 61.688727,
-        lng: 27.272146
-      }, 14);
+      //If position is not available for some reason, use mikkeli centre which is already initialized
     });
   },
   renderEventsPage: function(){
@@ -159,7 +185,7 @@ var app = {
     $('.events-container').show();
     if(!eventsInitialized) {
       eventsInitialized = true;
-      new Swiper('.events-container', {});
+      new Swiper('.events-container', { });
       new Swiper('.swiper-container-inner', {
           scrollbar: '.swiper-scrollbar',
           direction: 'vertical',
@@ -173,55 +199,76 @@ var app = {
   renderTimeTable: function (date) {
     if (typeof date == 'undefined') {
       var dates = [];
-      for (var i = 0; i < pages.length; i++) {
-        if (dates.indexOf(pages[i].time.date) == -1) { //TODO: switch to array
-          dates.push(pages[i].time.date);
+      for(var slug in eventpages) {
+        if(eventpages.hasOwnProperty(slug)) {
+          var event = eventpages[slug];
+          for(var i = 0; i < event.dates.length; i++) {
+            if (dates.indexOf(event.dates[i]) == -1) {
+              dates.push(event.dates[i]);
+            }
+          }
         }
       }
       var moments = [];
       for (var j = 0; j < dates.length; j++) {
-        moments.push(moment(dates[j], 'DD.MM.YYYY'));
+        moments.push(moment(dates[j], 'D.M.'));
       }
       moments = moments.sort(function (a, b) {
         if (a.isBefore(b)) {
-          return 1;
-        } else if (b.isBefore(a)) {
           return -1;
+        } else if (b.isBefore(a)) {
+          return 1;
         } else {
           return 0;
         }
       });
-      var content = '<ul>';
+      var content = '<table class="table">';
       for(var n = 0; n < moments.length;n++){
-        content += '<li><a href="#">'+moments[n].format('dddd D.M')+'</a></li>';
+        content += '<tr><td><a data-date="'+moments[n].format('D.M.')+'" class="date-timetable" href="#">'+moments[n].format('dddd D.M')+'</a></td></tr>';
       }
-      $('.main-content').html(content);
-      $('.content-title').text('Aikataulu');
+      content += '</table>';
+      $('.default-container .main-content').html(content);
+      $('.default-container .content-title').text('Aikataulu');
+      $('.events-container').hide();
+      $('.map-container').hide();
+      $('.default-container').show();
     } else {
       var events = [];
-      for(var i = 0; i < pages.length;i++) {
-        var eventDates = pages[i].times.map( function(eventTime){ return eventTime.date; });
-        if(eventDates.indexOf(date) !== -1){
-          events.push(pages[i]);
+      for(var slug in eventpages) {
+        if(eventpages.hasOwnProperty(slug)) {
+          var event = eventpages[slug];
+          if(event.dates.indexOf(date) !== -1){
+            events.push(event);
+          }
+        }
+      }
+      for(var i = 0; i < events.length;i++) {
+        for(var j = 0; j < events[i].open.length;j++){
+          if(events[i].open[j].date == date) {
+            events[i].currentOpen = events[i].open[j];
+            break;
+          }
         }
       }
       events = events.sort(function(a, b){
-        var aMoment = moment(a.times[date].start);
-        var bMoment = moment(b.times[date].start);
-        if (aMoment.isBefore(bMoment)) {
-          return 1;
-        } else if (bMoment.isBefore(aMoment)) {
+        if (a.currentOpen.opens.isBefore(b.currentOpen.opens)) {
           return -1;
+        } else if (b.currentOpen.opens.isBefore(a.currentOpen.opens)) {
+          return 1;
         } else {
           return 0;
         }
       });
-      var content = '<ul>';
+      var content = '<table class="table">';
       for(var j = 0; j < events.length;j++) {
-        content += '<li><a href="'+events[j].slug+'">'+events[j].times[date].start+' - '+events[j].times[date].end+' '+events[j].title+'</a></li>';
+        content += '<tr><td><a class="show-event-data" data-slug="'+events[j].slug+'" href="#">'+events[j].currentOpen.opens.format('H:mm')+' - '+events[j].currentOpen.closes.format('H:mm')+' '+events[j].title+'</a></td></tr>';
       }
-      $('.main-content').html(content);
-      $('.content-title').text(date);
+      content += '</table>';
+      $('.default-container .main-content').html(content);
+      $('.default-container .content-title').text(moment(date, 'D.M.').format('dddd D.M.'));
+      $('.events-container').hide();
+      $('.map-container').hide();
+      $('.default-container').show();
     }
   }
 };
