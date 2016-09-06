@@ -23,7 +23,7 @@ var app = {
   // The scope of 'this' is the event.
   onDeviceReady: function () {
     moment.locale('fi');
-    $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts', function (posts) {
+    $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts?per_page=50', function (posts) {
       for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
         switch (post.postType) {
