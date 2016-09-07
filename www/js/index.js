@@ -24,6 +24,7 @@ var app = {
   onDeviceReady: function () {
     moment.locale('fi');
     $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts?per_page=50', function (posts) {
+      var slides = [];
       for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
         switch (post.postType) {
@@ -61,37 +62,42 @@ var app = {
               dates:open.map( function(eventOpen){ return eventOpen.date; }), 
               open: openMoment
             }
-            var slide = $('<div></div>');
-            slide.addClass('swiper-slide');
-            slide.append($('<div></div>')
-              .addClass('swiper-container')
-              .addClass('swiper-container-inner')
-              .append(
-                $('<div></div>')
-                  .addClass('swiper-wrapper')
-                  .append(
-                    $('<div></div>')
-                      .addClass('swiper-slide')
-                      .append(
-                        $('<h3></h3>')
-                          .addClass('content-title')
-                          .text(eventpages[post.slug].title)
-                      )
-                      .append(
-                        $('<div></div>')
-                          .addClass('main-content')
-                          .html(eventpages[post.slug].content)
-                      )
-                  )
-              )
-              .append(
-                $('<div></div>')
-                  .addClass('swiper-scrollbar')
-              )
-            );
-            $('.events-wrapper').append(slide); //TODO: sort
+            slides.push(post.slug);
             break;
         }
+      }
+      slides.sort();
+      for(var i = 0; i < slides.length;i++) {
+        var slide = slides[i];
+        var slideContainer = $('<div></div>');
+        slideContainer.addClass('swiper-slide');
+        slideContainer.append($('<div></div>')
+          .addClass('swiper-container')
+          .addClass('swiper-container-inner')
+          .append(
+            $('<div></div>')
+              .addClass('swiper-wrapper')
+              .append(
+                $('<div></div>')
+                  .addClass('swiper-slide')
+                  .append(
+                    $('<h3></h3>')
+                      .addClass('content-title')
+                      .text(eventpages[slide].title)
+                  )
+                  .append(
+                    $('<div></div>')
+                      .addClass('main-content')
+                      .html(eventpages[slide].content)
+                  )
+              )
+          )
+          .append(
+            $('<div></div>')
+              .addClass('swiper-scrollbar')
+          )
+        );
+        $('.events-wrapper').append(slideContainer);
       }
       app.renderFrontPage();
     });
