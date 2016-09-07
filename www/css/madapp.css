@@ -22,6 +22,19 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+.load-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #FFF;
+  padding-top: 40%;
+  z-index: 9999;
+}
+.load-logo {
+    padding: 35px;
+}
 .main-content a {
   color: #EC2D76;
   font-weight: bold;
