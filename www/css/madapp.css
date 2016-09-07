@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'Titillium Web';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(../fonts/anMUvcNT0H1YN4FII8wpr4-67659ICLY8bMrYhtePPA.woff2) format('woff2');
 }
 * {
@@ -21,6 +21,17 @@ body {
   background-position: center bottom;
   background-size: cover;
   background-attachment: fixed;
+}
+.main-content a {
+  color: #EC2D76;
+  font-weight: bold;
+}
+.main-content a:focus {
+  outline: none;
+}
+.main-content a:focus, .main-content a:hover {
+  color: #E72760;
+  text-decoration: underline;
 }
 .events-container {
   display: none;
@@ -47,7 +58,7 @@ body {
 .main-content {
   line-height: 1.1;
   padding: 10px;
-  background-color: rgba(255,255,255,0.7);
+  color:#000;
 }
 .main-content img {
   width: 100%;
