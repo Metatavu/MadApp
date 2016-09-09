@@ -24,4 +24,5 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <plugin name="cordova-plugin-geolocation" spec="~2.2.0" />
+    <preference name="orientation" value="portrait" />
 </widget>
