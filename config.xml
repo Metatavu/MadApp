@@ -18,4 +18,6 @@
     <allow-intent href="https://*/*" />
     <plugin name="cordova-plugin-geolocation" spec="~2.2.0" />
     <preference name="orientation" value="portrait" />
+    <preference name="windows-identity-name" value="MetatavuOy.MikkeliArtandDesignWeek2016" />
+    <preference name="phonegap-version" value="cli-6.0.0" />
 </widget>
