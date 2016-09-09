@@ -6,6 +6,16 @@ var eventsInitialized = false;
 var mapInitialized = false;
 var map = null;
 
+function shuffle(a) {
+  var j, x, i;
+  for (i = a.length; i; i--) {
+    j = Math.floor(Math.random() * i);
+    x = a[i - 1];
+    a[i - 1] = a[j];
+    a[j] = x;
+  }
+}
+
 var app = {
   // Application Constructor
   initialize: function () {
@@ -24,11 +34,11 @@ var app = {
   onDeviceReady: function () {
     $.getJSON('https://madweek.metatavu.io/wp-json/wp/v2/posts?per_page=50', function (posts) {
       app.initApp(posts);
-    }).fail(function(err) {
+    }).fail(function (err) {
       $('.load-error')
         .empty()
         .append('<p>Virhe ladattaessa sisältöä, yritetään uudelleen...</p>');
-      setTimeout(function(){
+      setTimeout(function () {
         app.onDeviceReady();
       }, 2000);
     });
@@ -156,7 +166,31 @@ var app = {
     $('.default-container').show();
   },
   renderFrontPage: function () {
-    app.renderPage(frontpage);
+    var currentMoment = moment();
+    var currentEvents = [];
+    for (var slug in eventpages) {
+      var event = eventpages[slug];
+      for (var j = 0; j < event.open.length; j++) {
+        var eventOpen = event.open[j];
+        if (eventOpen.opens.isBefore(currentMoment) && eventOpen.closes.isAfter(currentMoment)) {
+          currentEvents.push(event);
+          break;
+        }
+      }
+    }
+    shuffle(currentEvents);
+    var frontPageEvents = currentEvents.slice(0,3);
+    var content = frontpage.content;
+    content += '<br/><p><b>Juuri nyt:</b></p><table class="table">';
+    for(var n = 0; n < frontPageEvents.length;n++){
+      content += '<tr><td><a class="show-event-data" data-slug="' + frontPageEvents[n].slug + '" href="#">' + frontPageEvents[n].title + '</a></td></tr>';
+    }
+    content += '</table>';
+    var page = {
+      title: frontpage.title,
+      content: content
+    }
+    app.renderPage(page);
   },
   renderInfoPage: function () {
     app.renderPage(infopage);
