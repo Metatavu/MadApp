@@ -18,6 +18,5 @@
     <allow-intent href="https://*/*" />
     <plugin name="cordova-plugin-geolocation" spec="~2.2.0" />
     <preference name="orientation" value="portrait" />
-    <preference name="windows-appx-target" value="8.1-phone" />
-    <preference name="windows-appx-target" value="uap" />
+    <preference name="phonegap-version" value="cli-6.0.0" />
 </widget>
