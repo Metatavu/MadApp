@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.1' encoding='utf-8'?>
 <widget id="fi.metatavu.MadApp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mikkeli Art and Design Week 2016</name>
     <description>
@@ -32,4 +32,5 @@
     <plugin name="cordova-plugin-geolocation" spec="~2.2.0" />
     <preference name="orientation" value="portrait" />
     <preference name="windows-identity-name" value="MetatavuOy.MikkeliArtandDesignWeek2016" />
+    <preference name="deployment-target" value="5.1.0" />
 </widget>
