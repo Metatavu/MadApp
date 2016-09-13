@@ -4,8 +4,8 @@
     <description>
         Application that will be used during Mikkeli Art and Design week to inform visitors about different happenings around the city.
     </description>
-    <author email="info@metatavu.fi" href="https://metatavu.fi">
-        Metatavu Oy
+    <author email="heikki.kurhinen@gmail.com" href="https://metatavu.fi">
+        Heikki Kurhinen
     </author>
     <icon src="res/icon.png" />
     <icon platform="winphone" width="44"  height="44"  src="res/mad44x44.png" />
@@ -32,5 +32,4 @@
     <plugin name="cordova-plugin-geolocation" spec="~2.2.0" />
     <preference name="orientation" value="portrait" />
     <preference name="windows-identity-name" value="MetatavuOy.MikkeliArtandDesignWeek2016" />
-    <preference name="deployment-target" value="5.1.0" />
 </widget>
