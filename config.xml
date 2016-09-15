@@ -50,4 +50,5 @@
     <preference name="orientation" value="portrait" />
     <preference name="windows-identity-name" value="MetatavuOy.MikkeliArtandDesignWeek2016" />
     <preference name="target-device" value="handset" />
+    <preference name="SplashScreenDelay" value="0"/>
 </widget>
